@@ -5,8 +5,45 @@
 
 #include QMK_KEYBOARD_H
 
+enum custom_keycodes {
+  NGO = SAFE_RANGE,
+  NLA,
+  NBW,
+  VIO
+};
+
+bool process_record_user(uint16_t keycode, keyrecord_t* record) {
+  switch (keycode) {
+    case NGO:
+      if (record->event.pressed) {
+        SEND_STRING("string_1");
+      }
+      return false;
+
+    case NLA:
+      if (record->event.pressed) {
+        SEND_STRING("string_2");
+      }
+      return false;
+
+    case NBW:
+      if (record->event.pressed) {
+        SEND_STRING("string_3");
+      }
+      return false;
+
+    case VIO:
+      if (record->event.pressed) {
+        SEND_STRING("string_4");
+      }
+      return false;
+  }
+  return true;
+}
+
 #include "manna-harbour_miryoku.h"
 
+#include "oled.c"
 
 // Additional Features double tap guard
 
@@ -89,5 +126,3 @@ combo_t key_combos[COMBO_COUNT] = {
   COMBO(thumbcombos_fun, KC_APP)
 };
 #endif
-
-#include "oled.c"

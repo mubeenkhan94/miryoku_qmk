@@ -5,6 +5,8 @@
 
 #pragma once
 
+// #include "users/manna-harbour_miryoku/macros.c"
+
 #undef SSD1306OLED
 #define OLED_FONT_H "users/manna-harbour_miryoku/glcdfont.c"
 
@@ -25,10 +27,10 @@
        N30,   N31,   K32,   K33,   K34,   K35,   K36,   K37,   N38,   N39 \
 ) \
 LAYOUT( \
-KC_FUN, K00,   K01,   K02,   K03,   K04,   K05,   K06,   K07,   K08,   K09,   KC_LK, \
-KC_NML, K10,   K11,   K12,   K13,   K14,   K15,   K16,   K17,   K18,   K19,   KC_NAV, \
-KC_SYM, K20,   K21,   K22,   K23,   K24,   K25,   K26,   K27,   K28,   K29,   KC_CLP, \
-                      K32,   K33,   K34,   K35,   K36,   K37 \
+       KC_FUN, K00, K01, K02, K03, K04,            K05, K06, K07, K08, K09, KC_LK, \
+       KC_NML, K10, K11, K12, K13, K14,            K15, K16, K17, K18, K19, KC_NAV, \
+       KC_SYM, K20, K21, K22, K23, K24,            K25, K26, K27, K28, K29, KC_CLP, \
+                            K32, K33,   K34,  K35,   K36, K37 \
 )
 
 #define MIRYOKU_LAYER_BASE \
@@ -50,10 +52,10 @@ KC_Z,              KC_X,              KC_C,              KC_D,              KC_V
 U_NP,              U_NP,              KC_ESC,            KC_BSPC,           KC_TAB,            KC_ENT,            KC_SPC,            KC_DEL,            U_NP,              U_NP
 
 #define MIRYOKU_LAYER_NAV \
-TD(U_TD_BOOT),     TD(U_TD_U_TAP),    TD(U_TD_U_EXTRA),  TD(U_TD_U_BASE),   U_NA,              U_RDO,             U_PST,             U_CPY,             U_CUT,             U_UND,             \
-KC_LGUI,           KC_LALT,           KC_LCTL,           KC_LSFT,           U_NA,              CW_TOGG,           KC_LEFT,           KC_DOWN,           KC_UP,             KC_RGHT,           \
-U_NA,              KC_ALGR,           TD(U_TD_U_NUM),    TD(U_TD_U_NAV),    U_NA,              KC_INS,            KC_HOME,           KC_PGDN,           KC_PGUP,           KC_END,            \
-U_NP,              U_NP,              U_NA,              U_NA,              U_NA,              KC_ENT,            KC_SPC,            KC_DEL,            U_NP,              U_NP
+TD(U_TD_BOOT),     TD(U_TD_U_TAP),    TD(U_TD_U_EXTRA),  TD(U_TD_U_BASE),   NBW,               U_RDO,             U_PST,             U_CPY,             U_CUT,             U_UND,             \
+KC_LGUI,           KC_LALT,           KC_LCTL,           KC_LSFT,           NLA,               CW_TOGG,           KC_LEFT,           KC_DOWN,           KC_UP,             KC_RGHT,           \
+U_NA,              KC_ALGR,           TD(U_TD_U_NUM),    TD(U_TD_U_NAV),    NGO,               KC_INS,            KC_HOME,           KC_PGDN,           KC_PGUP,           KC_END,            \
+U_NP,              U_NP,              U_NA,              U_NA,              VIO,               KC_ENT,            KC_SPC,            KC_DEL,            U_NP,              U_NP
 
 #define MIRYOKU_LAYER_FUN \
 KC_F12,            KC_F7,             KC_F8,             KC_F9,             KC_PSCR,           U_NA,              TD(U_TD_U_BASE),   TD(U_TD_U_EXTRA),  TD(U_TD_U_TAP),    TD(U_TD_BOOT),     \
