@@ -13,6 +13,9 @@
 #define SPLIT_WPM_ENABLE   // Enable WPM across split keyboards (+268).
 #define SPLIT_OLED_ENABLE  // Sync on/off OLED state between halves (+100).
 
+#undef LOCKING_SUPPORT_ENABLE
+#undef LOCKING_RESYNC_ENABLE
+
 #define MIRYOKU_LAYER_LIST \
 MIRYOKU_X(BASE,   "Base") \
 MIRYOKU_X(EXTRA,  "Extra") \
@@ -26,12 +29,12 @@ MIRYOKU_X(SYM,    "Sym") \
 MIRYOKU_X(FUN,    "Fun") \
 MIRYOKU_X(PRSNL,  "Personal")
 
-#define KC_LK   LT(U_MEDIA, MAC_LOCK) // lock Mac computer; media layer
+#define KC_MCM  TD(LT_MOUSE_CLIPBOARD_MANAGER) // launch Alfred clipboard manager; mouse layer
 #define KC_NAV  LT(U_NAV, KC_QUOT) // quote; navigation layer
-#define KC_CLP  LT(U_PRSNL, CLIPBOARD_MANAGER) // launch Alfred clipboard manager; personal layer
-#define KC_FUN  LT(U_FUN, MAC_SCREENSHOT) // mac screenshot (native, area); function layer
-#define KC_NML  LT(U_NUM, SHOTTR_OCR) // shottr capture text for OCR; num layer
-#define KC_SYM  LT(U_SYM, MAC_UNDO) // CMD+Z; symbol layer
+#define KC_LOK  TD(LT_PRSNL_MAC_LOCK) // lock Mac computer; personal layer
+#define KC_FSA  TD(LT_FUN_SHOTTR_AREA_SCREENSHOT) // shottr area screenshot; function layer
+#define KC_NSO  TD(LT_NUM_SHOTTR_OCR) // shottr capture text for OCR; num layer
+#define KC_SIH  TD(LT_SYM_ITERM_HOTKEY) // iTerm 2 hotkey; symbol layer
 
 #define MIRYOKU_MAPPING( \
        K00,   K01,   K02,   K03,   K04,   K05,   K06,   K07,   K08,   K09, \
@@ -40,9 +43,9 @@ MIRYOKU_X(PRSNL,  "Personal")
        N30,   N31,   K32,   K33,   K34,   K35,   K36,   K37,   N38,   N39 \
 ) \
 LAYOUT( \
-       KC_FUN, K00, K01, K02, K03, K04,            K05, K06, K07, K08, K09, KC_LK, \
-       KC_NML, K10, K11, K12, K13, K14,            K15, K16, K17, K18, K19, KC_NAV, \
-       KC_SYM, K20, K21, K22, K23, K24,            K25, K26, K27, K28, K29, KC_CLP, \
+       KC_FSA, K00, K01, K02, K03, K04,            K05, K06, K07, K08, K09, KC_MCM, \
+       KC_NSO, K10, K11, K12, K13, K14,            K15, K16, K17, K18, K19, KC_NAV, \
+       KC_SIH, K20, K21, K22, K23, K24,            K25, K26, K27, K28, K29, KC_LOK, \
                             K32, K33,   K34,  K35,   K36, K37 \
 )
 
@@ -80,7 +83,7 @@ U_NP,              U_NP,              KC_APP,            KC_BSPC,           KC_T
 U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,     \
 U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,     \
 U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,     \
-U_NP,              U_NP,              U_NA,              U_NA,              NBW,               NLA,               NGO,               VIO,               U_NP,              U_NP
+U_NP,              U_NP,              U_NA,              U_NA,              ADDRESS,               PHONE,               EMAIL,               DISCORD,               U_NP,              U_NP
 
 #define MIRYOKU_LAYERMAPPING_PRSNL MIRYOKU_MAPPING
 

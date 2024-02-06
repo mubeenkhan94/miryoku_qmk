@@ -6,75 +6,53 @@
 #include QMK_KEYBOARD_H
 
 enum custom_keycodes {
-  NGO = SAFE_RANGE,
-  NLA,
-  NBW,
-  VIO,
-  MAC_LOCK,
-  CLIPBOARD_MANAGER,
-  MAC_SCREENSHOT,
-  SHOTTR_OCR,
-  MAC_UNDO
+  EMAIL = SAFE_RANGE,
+  PHONE,
+  ADDRESS,
+  DISCORD
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
   switch (keycode) {
-    case NGO:
+    case EMAIL:
       if (record->event.pressed) {
-        SEND_STRING("string_1");
+        SEND_STRING("me@email.fake");
       }
       return false;
 
-    case NLA:
+    case PHONE:
       if (record->event.pressed) {
-        SEND_STRING("string_2");
+        SEND_STRING("(555) 555-5555");
       }
       return false;
 
-    case NBW:
+    case ADDRESS:
       if (record->event.pressed) {
-        SEND_STRING("string_3");
+        SEND_STRING("123 Main St\nNew York City, New York 10024");
       }
       return false;
 
-    case VIO:
+    case DISCORD:
       if (record->event.pressed) {
-        SEND_STRING("string_4");
-      }
-      return false;
-
-    case MAC_LOCK:
-      if (record->event.pressed) {
-        SEND_STRING(SS_LCTL(SS_LGUI("q")));
-      }
-      return false;
-
-    case CLIPBOARD_MANAGER:
-      if (record->event.pressed) {
-        SEND_STRING(SS_LSFT(SS_LGUI("v")));
-      }
-      return false;
-
-    case MAC_SCREENSHOT:
-      if (record->event.pressed) {
-        SEND_STRING(SS_LGUI(SS_LSFT("4")));
-      }
-      return false;
-
-    case SHOTTR_OCR:
-      if (record->event.pressed) {
-        SEND_STRING(SS_LCTL(SS_LALT(SS_LGUI("o"))));
-      }
-      return false;
-
-    case MAC_UNDO:
-      if (record->event.pressed) {
-        SEND_STRING(SS_LGUI("z"));
+        SEND_STRING("username");
       }
       return false;
   }
   return true;
 }
+
+// Define a type for as many tap dance states as you need
+typedef enum {
+    TD_NONE,
+    TD_UNKNOWN,
+    TD_SINGLE_TAP,
+    TD_SINGLE_HOLD
+} td_state_t;
+
+typedef struct {
+    bool is_press_action;
+    td_state_t state;
+} td_tap_t;
 
 #include "manna-harbour_miryoku.h"
 
@@ -84,10 +62,224 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
 
 enum {
     U_TD_BOOT,
+    LT_PRSNL_MAC_LOCK,
+    LT_MOUSE_CLIPBOARD_MANAGER,
+    LT_FUN_SHOTTR_AREA_SCREENSHOT,
+    LT_NUM_SHOTTR_OCR,
+    LT_SYM_ITERM_HOTKEY,
 #define MIRYOKU_X(LAYER, STRING) U_TD_U_##LAYER,
 MIRYOKU_LAYER_LIST
 #undef MIRYOKU_X
 };
+
+// Function associated with all tap dances
+td_state_t cur_dance(tap_dance_state_t *state);
+
+// Functions associated with individual tap dances
+void lpml_finished(tap_dance_state_t *state, void *user_data);
+void lpml_reset(tap_dance_state_t *state, void *user_data);
+
+void lmcm_finished(tap_dance_state_t *state, void *user_data);
+void lmcm_reset(tap_dance_state_t *state, void *user_data);
+
+void lfsas_finished(tap_dance_state_t *state, void *user_data);
+void lfsas_reset(tap_dance_state_t *state, void *user_data);
+
+void lnso_finished(tap_dance_state_t *state, void *user_data);
+void lnso_reset(tap_dance_state_t *state, void *user_data);
+
+void lsih_finished(tap_dance_state_t *state, void *user_data);
+void lsih_reset(tap_dance_state_t *state, void *user_data);
+
+// Determine the current tap dance state
+td_state_t cur_dance(tap_dance_state_t *state) {
+    if (state->count == 1) {
+        if (!state->pressed) return TD_SINGLE_TAP;
+        else return TD_SINGLE_HOLD;
+    } else return TD_UNKNOWN;
+}
+
+// Initialize tap structure associated with example tap dance key
+static td_tap_t lpml_tap_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+static td_tap_t lmcm_tap_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+static td_tap_t lfsas_tap_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+static td_tap_t lnso_tap_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+static td_tap_t lsih_tap_state = {
+    .is_press_action = true,
+    .state = TD_NONE
+};
+
+// Functions that control what our tap dance key does
+void lpml_finished(tap_dance_state_t *state, void *user_data) {
+    lpml_tap_state.state = cur_dance(state);
+    switch (lpml_tap_state.state) {
+        case TD_SINGLE_TAP:
+            register_code16(KC_LGUI);
+            register_code16(KC_LCTL);
+            register_code16(KC_Q);
+            break;
+        case TD_SINGLE_HOLD:
+            layer_on(U_PRSNL);
+            break;
+        default:
+            break;
+    }
+}
+
+void lmcm_finished(tap_dance_state_t *state, void *user_data) {
+    lmcm_tap_state.state = cur_dance(state);
+    switch (lmcm_tap_state.state) {
+        case TD_SINGLE_TAP:
+            register_code16(KC_LGUI);
+            register_code16(KC_LSFT);
+            register_code16(KC_V);
+            break;
+        case TD_SINGLE_HOLD:
+            layer_on(U_MOUSE);
+            break;
+        default:
+            break;
+    }
+}
+
+void lfsas_finished(tap_dance_state_t *state, void *user_data) {
+    lfsas_tap_state.state = cur_dance(state);
+    switch (lfsas_tap_state.state) {
+        case TD_SINGLE_TAP:
+            register_code16(KC_LGUI);
+            register_code16(KC_LSFT);
+            register_code16(KC_2);
+            break;
+        case TD_SINGLE_HOLD:
+            layer_on(U_FUN);
+            break;
+        default:
+            break;
+    }
+}
+
+void lnso_finished(tap_dance_state_t *state, void *user_data) {
+    lnso_tap_state.state = cur_dance(state);
+    switch (lnso_tap_state.state) {
+        case TD_SINGLE_TAP:
+            register_code16(KC_LGUI);
+            register_code16(KC_LCTL);
+            register_code16(KC_LALT);
+            register_code16(KC_O);
+            break;
+        case TD_SINGLE_HOLD:
+            layer_on(U_NUM);
+            break;
+        default:
+            break;
+    }
+}
+
+void lsih_finished(tap_dance_state_t *state, void *user_data) {
+    lsih_tap_state.state = cur_dance(state);
+    switch (lsih_tap_state.state) {
+        case TD_SINGLE_TAP:
+            register_code16(KC_LALT);
+            register_code16(KC_SLSH);
+            break;
+        case TD_SINGLE_HOLD:
+            layer_on(U_SYM);
+            break;
+        default:
+            break;
+    }
+}
+
+void lpml_reset(tap_dance_state_t *state, void *user_data) {
+    switch (lpml_tap_state.state) {
+        case TD_SINGLE_TAP:
+            unregister_code16(KC_LGUI);
+            unregister_code16(KC_LCTL);
+            unregister_code16(KC_Q);;
+            break;
+        case TD_SINGLE_HOLD:
+            layer_off(U_PRSNL);
+            break;
+        default:
+            break;
+    }
+}
+
+void lmcm_reset(tap_dance_state_t *state, void *user_data) {
+    switch (lmcm_tap_state.state) {
+        case TD_SINGLE_TAP:
+            unregister_code16(KC_LGUI);
+            unregister_code16(KC_LSFT);
+            unregister_code16(KC_V);;
+            break;
+        case TD_SINGLE_HOLD:
+            layer_off(U_MOUSE);
+            break;
+        default:
+            break;
+    }
+}
+
+void lfsas_reset(tap_dance_state_t *state, void *user_data) {
+    switch (lfsas_tap_state.state) {
+        case TD_SINGLE_TAP:
+            unregister_code16(KC_LGUI);
+            unregister_code16(KC_LSFT);
+            unregister_code16(KC_2);;
+            break;
+        case TD_SINGLE_HOLD:
+            layer_off(U_FUN);
+            break;
+        default:
+            break;
+    }
+}
+
+void lnso_reset(tap_dance_state_t *state, void *user_data) {
+    switch (lnso_tap_state.state) {
+        case TD_SINGLE_TAP:
+            unregister_code16(KC_LGUI);
+            unregister_code16(KC_LCTL);
+            unregister_code16(KC_LALT);
+            unregister_code16(KC_O);;
+            break;
+        case TD_SINGLE_HOLD:
+            layer_off(U_NUM);
+            break;
+        default:
+            break;
+    }
+}
+
+void lsih_reset(tap_dance_state_t *state, void *user_data) {
+    switch (lsih_tap_state.state) {
+        case TD_SINGLE_TAP:
+            unregister_code16(KC_LALT);
+            unregister_code16(KC_SLSH);;
+            break;
+        case TD_SINGLE_HOLD:
+            layer_off(U_SYM);
+            break;
+        default:
+            break;
+    }
+}
 
 void u_td_fn_boot(tap_dance_state_t *state, void *user_data) {
   if (state->count == 2) {
@@ -106,6 +298,11 @@ MIRYOKU_LAYER_LIST
 
 tap_dance_action_t tap_dance_actions[] = {
     [U_TD_BOOT] = ACTION_TAP_DANCE_FN(u_td_fn_boot),
+    [LT_PRSNL_MAC_LOCK] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lpml_finished, lpml_reset),
+    [LT_MOUSE_CLIPBOARD_MANAGER] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lmcm_finished, lmcm_reset),
+    [LT_FUN_SHOTTR_AREA_SCREENSHOT] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lfsas_finished, lfsas_reset),
+    [LT_NUM_SHOTTR_OCR] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lnso_finished, lnso_reset),
+    [LT_SYM_ITERM_HOTKEY] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, lsih_finished, lsih_reset),
 #define MIRYOKU_X(LAYER, STRING) [U_TD_U_##LAYER] = ACTION_TAP_DANCE_FN(u_td_fn_U_##LAYER),
 MIRYOKU_LAYER_LIST
 #undef MIRYOKU_X
