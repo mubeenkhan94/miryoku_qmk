@@ -13,12 +13,25 @@
 #define SPLIT_WPM_ENABLE   // Enable WPM across split keyboards (+268).
 #define SPLIT_OLED_ENABLE  // Sync on/off OLED state between halves (+100).
 
-#define KC_LK   C(G(KC_Q)) // lock Mac computer
-#define KC_CLP  S(G(KC_V)) // launch Alfred clipboard manager
-#define KC_NAV  LT(U_NAV, KC_QUOT)
-#define KC_NML  MO(U_NUM)
-#define KC_SYM  MO(U_SYM)
-#define KC_FUN  MO(U_FUN)
+#define MIRYOKU_LAYER_LIST \
+MIRYOKU_X(BASE,   "Base") \
+MIRYOKU_X(EXTRA,  "Extra") \
+MIRYOKU_X(TAP,    "Tap") \
+MIRYOKU_X(BUTTON, "Button") \
+MIRYOKU_X(NAV,    "Nav") \
+MIRYOKU_X(MOUSE,  "Mouse") \
+MIRYOKU_X(MEDIA,  "Media") \
+MIRYOKU_X(NUM,    "Num") \
+MIRYOKU_X(SYM,    "Sym") \
+MIRYOKU_X(FUN,    "Fun") \
+MIRYOKU_X(PRSNL,  "Personal")
+
+#define KC_LK   LT(U_MEDIA, MAC_LOCK) // lock Mac computer; media layer
+#define KC_NAV  LT(U_NAV, KC_QUOT) // quote; navigation layer
+#define KC_CLP  LT(U_PRSNL, CLIPBOARD_MANAGER) // launch Alfred clipboard manager; personal layer
+#define KC_FUN  LT(U_FUN, MAC_SCREENSHOT) // mac screenshot (native, area); function layer
+#define KC_NML  LT(U_NUM, SHOTTR_OCR) // shottr capture text for OCR; num layer
+#define KC_SYM  LT(U_SYM, MAC_UNDO) // CMD+Z; symbol layer
 
 #define MIRYOKU_MAPPING( \
        K00,   K01,   K02,   K03,   K04,   K05,   K06,   K07,   K08,   K09, \
@@ -52,15 +65,23 @@ KC_Z,              KC_X,              KC_C,              KC_D,              KC_V
 U_NP,              U_NP,              KC_ESC,            KC_BSPC,           KC_TAB,            KC_ENT,            KC_SPC,            KC_DEL,            U_NP,              U_NP
 
 #define MIRYOKU_LAYER_NAV \
-TD(U_TD_BOOT),     TD(U_TD_U_TAP),    TD(U_TD_U_EXTRA),  TD(U_TD_U_BASE),   NBW,               U_RDO,             U_PST,             U_CPY,             U_CUT,             U_UND,             \
-KC_LGUI,           KC_LALT,           KC_LCTL,           KC_LSFT,           NLA,               CW_TOGG,           KC_LEFT,           KC_DOWN,           KC_UP,             KC_RGHT,           \
-U_NA,              KC_ALGR,           TD(U_TD_U_NUM),    TD(U_TD_U_NAV),    NGO,               KC_INS,            KC_HOME,           KC_PGDN,           KC_PGUP,           KC_END,            \
-U_NP,              U_NP,              U_NA,              U_NA,              VIO,               KC_ENT,            KC_SPC,            KC_DEL,            U_NP,              U_NP
+TD(U_TD_BOOT),     TD(U_TD_U_TAP),    TD(U_TD_U_EXTRA),  TD(U_TD_U_BASE),   U_NA,               U_RDO,             U_PST,             U_CPY,             U_CUT,             U_UND,             \
+KC_LGUI,           KC_LALT,           KC_LCTL,           KC_LSFT,           U_NA,               CW_TOGG,           KC_LEFT,           KC_DOWN,           KC_UP,             KC_RGHT,           \
+U_NA,              KC_ALGR,           TD(U_TD_U_NUM),    TD(U_TD_U_NAV),    U_NA,               KC_INS,            KC_HOME,           KC_PGDN,           KC_PGUP,           KC_END,            \
+U_NP,              U_NP,              U_NA,              U_NA,              U_NA,               KC_ENT,            KC_SPC,            KC_DEL,            U_NP,              U_NP
 
 #define MIRYOKU_LAYER_FUN \
 KC_F12,            KC_F7,             KC_F8,             KC_F9,             KC_PSCR,           U_NA,              TD(U_TD_U_BASE),   TD(U_TD_U_EXTRA),  TD(U_TD_U_TAP),    TD(U_TD_BOOT),     \
 KC_F11,            KC_F4,             KC_F5,             KC_F6,             KC_SCRL,           U_NA,              KC_LSFT,           KC_LCTL,           KC_LALT,           KC_LGUI,           \
 KC_F10,            KC_F1,             KC_F2,             KC_F3,             KC_PAUS,           U_NA,              TD(U_TD_U_FUN),    TD(U_TD_U_MEDIA),  KC_ALGR,           U_NA,              \
 U_NP,              U_NP,              KC_APP,            KC_BSPC,           KC_TAB,            U_NA,              U_NA,              U_NA,              U_NP,              U_NP
+
+#define MIRYOKU_LAYER_PRSNL \
+U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,     \
+U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,     \
+U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,              U_NA,     \
+U_NP,              U_NP,              U_NA,              U_NA,              NBW,               NLA,               NGO,               VIO,               U_NP,              U_NP
+
+#define MIRYOKU_LAYERMAPPING_PRSNL MIRYOKU_MAPPING
 
 #define MIRYOKU_CLIPBOARD = MAC

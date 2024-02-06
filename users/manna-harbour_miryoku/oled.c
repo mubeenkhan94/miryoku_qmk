@@ -140,6 +140,9 @@ static inline void print_status(void) {
         case U_SYM:
             oled_write_ln_P(PSTR("Sym"), false);
             break;
+        case U_PRSNL:
+            oled_write_ln_P(PSTR("Pers"), false);
+            break;
         default:
             oled_write_ln_P(PSTR("Unkn"), false);
     }

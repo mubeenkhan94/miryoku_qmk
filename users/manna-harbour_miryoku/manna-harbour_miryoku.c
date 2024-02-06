@@ -9,7 +9,12 @@ enum custom_keycodes {
   NGO = SAFE_RANGE,
   NLA,
   NBW,
-  VIO
+  VIO,
+  MAC_LOCK,
+  CLIPBOARD_MANAGER,
+  MAC_SCREENSHOT,
+  SHOTTR_OCR,
+  MAC_UNDO
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
@@ -35,6 +40,36 @@ bool process_record_user(uint16_t keycode, keyrecord_t* record) {
     case VIO:
       if (record->event.pressed) {
         SEND_STRING("string_4");
+      }
+      return false;
+
+    case MAC_LOCK:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LCTL(SS_LGUI("q")));
+      }
+      return false;
+
+    case CLIPBOARD_MANAGER:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LSFT(SS_LGUI("v")));
+      }
+      return false;
+
+    case MAC_SCREENSHOT:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LGUI(SS_LSFT("4")));
+      }
+      return false;
+
+    case SHOTTR_OCR:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LCTL(SS_LALT(SS_LGUI("o"))));
+      }
+      return false;
+
+    case MAC_UNDO:
+      if (record->event.pressed) {
+        SEND_STRING(SS_LGUI("z"));
       }
       return false;
   }
